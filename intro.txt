@@ -1,0 +1,31 @@
+
+    Database
+    ========
+    An organised collection of data. A method to manipulate & access the data
+
+
+    Database vs DBMS
+    ================
+
+        DBMS is tool by which we can access the database
+
+        App -> DBMS -> Database
+
+    
+    RDBMS (Relation DBMS)
+    ===== 
+    DBMS in Tabular format
+
+
+    Other Databases are MongoDB, Orcale, MySQL, SQLite etc...
+
+
+
+    MySQL    * Preferred because of most popular
+    ======   * Managed by Orcale
+    
+        DBMS which uses SQL to talk with database    
+
+
+
+    SQL is Structured Query Language which used to talk to Databases
