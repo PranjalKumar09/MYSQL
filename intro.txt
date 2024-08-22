@@ -23,9 +23,17 @@
 
     MySQL    * Preferred because of most popular
     ======   * Managed by Orcale
-    
+
         DBMS which uses SQL to talk with database    
 
 
 
     SQL is Structured Query Language which used to talk to Databases
+
+
+
+
+
+    Table
+    ====
+    It is collection of related held in table format within database 

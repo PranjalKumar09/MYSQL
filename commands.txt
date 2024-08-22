@@ -1,0 +1,30 @@
+
+$ mysql -u <user> -p
+To log in the sql from terminal
+
+
+
+$ show databases;   
+To list all databases
+
+$ create database <database>;
+By create database
+
+$ Use <database>
+Working with database
+
+$ select database()
+To check which database 
+
+$ drop database <database>;
+To delete database
+
+
+
+$ CREATE TABLE <table_name> ( <col1> <datatype1> ,<col2> <datatype2> --- )
+Creating new table
+Example: create table students {id INT, name VARCHAR(100)}; 
+
+
+$ DESC <table_name>;
+To get describe table (Table ) , datatype also tell whether null supported or it is primary key or not 
