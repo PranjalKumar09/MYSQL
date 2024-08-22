@@ -1,0 +1,126 @@
+MySQL 
+Step1 : Installation
+
+check the mysql is installed or not=>  rpm -qa | grep -i mysql
+
+
+Start/enable    =>  sudo systemctl * mysql
+
+*= start / enable / status  
+
+
+Step2:
+Changing default options => secure authentication process by setting password for root 
+=> sudo mysql_secure_installation 
+
+Step3:
+You can verify your installation with mysqladdmin tool
+=> mysqladmin -u root -p version 
+
+To connect and start using SQL quieries
+=> mysql -u root -p 
+
+sql is not case sensetive 
+
+Some important queries => 
+SHOW DATABASES;
+SHOW TABLE;
+USE <database_name>;
+
+
+
+
+Creating a new database =>
+CREATE DATABASES <db-name>;
+
+
+
+
+Check in which database presently we are => select database()
+
+
+CRUD 
+    Create 
+    Read  
+    Update 
+    Delete
+
+
+Creating a new Table 
+    CREATE TABLE <Table_name> (
+        <cloumn_name> <datatype> ,
+        <cloumn_name2> <datatype2> (<limit_length>)
+    )
+    limit_length is optional 
+
+Data Types =>  
+   Numeric Types:
+        INTEGER: Represents whole numbers.
+        SMALLINT: Similar to INTEGER but with a smaller range.
+        BIGINT: Used for large integer values.
+        DECIMAL(precision, scale): Exact numeric values with decimal points.
+        NUMERIC(precision, scale): Alias for DECIMAL.
+
+    Character String Types:
+        CHAR(n): Fixed-length character strings.
+        VARCHAR(n): Variable-length character strings with a maximum length.
+        TEXT: Variable-length character strings with no maximum length.
+        NCHAR(n): Fixed-length Unicode character strings.
+        NVARCHAR(n): Variable-length Unicode character strings.
+        NTEXT: Variable-length Unicode character strings with no maximum length.
+
+    Date and Time Types:
+        DATE: Stores date values in the format YYYY-MM-DD.
+        TIME: Stores time values in the format HH:MM:SS.
+        DATETIME: Stores date and time values in the format YYYY-MM-DD HH:MM:SS.
+        TIMESTAMP: Stores timestamp values in UTC format.
+
+    Binary Types:
+        BINARY(n): Fixed-length binary strings.
+        VARBINARY(n): Variable-length binary strings.
+        BLOB: Binary large objects for storing large binary data.
+
+    Boolean Type:
+        BOOLEAN: Represents true or false values.
+
+    Other Types:
+        ENUM(value1, value2, ...): Represents a list of predefined values.
+        SET(value1, value2, ...): Represents a set of predefined values.
+
+
+Checking your table => DESC <table_name>
+    information like  => Field | Type        | Null | Key | Default | Extra
+
+Adding data into a table =>
+    INSERT INTO <table_name> ( <cloumn_name1> , <cloumn_name2> ... )
+    VALUES (<value1_for_row1> , <value2_for_row1>  ... )  , (<value1_for_row1> , <value2_for_row1>  ... )  , (<value1_for_row2> , <value2_for_row2>  ... )  , (<value1_for_row3> , <value2_for_row3>  ... )  ...
+
+    INSERT INTO <table_name> VALUES ( <cloumn_name1> , <cloumn_name2> ... )
+
+Reading data from table 
+    SELECT  * FROM <table_name>
+    
+    SELECT  <cloumn_name> FROM <table_name>
+
+    SELECT  <field_area> FROM <table_name> WHERE <condition> ;
+    
+    condition like => <cloumn_name> = <some_value>
+
+
+Modify/Update data from table => 
+    UPDATE <table_name>
+        SET <column_name> = <value1>
+        WHERE <conditon>
+
+Delete data from table =>
+    DELETE FROM <table_name> 
+        WHERE <conditon>;
+    
+Deleting a database or table =>
+    DROP DATABASE <db_name>;
+    DROP TABLE <table_name>;
+ 
+
+
+
+
