@@ -26,5 +26,28 @@ Creating new table
 Example: create table students {id INT, name VARCHAR(100)}; 
 
 
+$ insert into <table>(columns ---) values(---);
+Example: insert into students (id, name) values(1, "Rahul");
+        insert into students  values(1, "Rahul") ;
+
+
 $ DESC <table_name>;
 To get describe table (Table ) , datatype also tell whether null supported or it is primary key or not 
+
+
+$ Select <column_name> from <table_name>;
+To read the table
+Example: select * from students;
+         select * from students where <conditions>; (using where)
+
+
+
+$ Update <table> set <what_to_done> where <condition>;
+Modify/Update date from Table
+
+$ delete from <table> where <condition>;
+delete from students where id=104;
+
+$ drop table <table>;
+To delete entire the table 
+
