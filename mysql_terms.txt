@@ -102,3 +102,78 @@ $ insert into customeers4(acc_no, name) values(001, "Ram");
 ERROR 1062 (23000): Duplicate entry '1' for key 'customeers4.PRIMARY'
 
 Primary keys must contain UNIQUE values, and cannot contain NULL values
+
+
+Auto Increment
+---------------
+$ create table customers (acc_no int primary key auto_increment, name varchar(100) not null,  acc_type varchar(50) not null default 'Savings');
+$  desc customers;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| acc_no   | int          | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(100) | NO   |     | NULL    |                |
+| acc_type | varchar(50)  | NO   |     | Savings |                |
++----------+--------------+------+-----+---------+----------------+
+
+$ insert into customers(name) values("Raju"), ("Sham");
+
+$ mysql> select * from customers;
++--------+------+----------+
+| acc_no | name | acc_type |
++--------+------+----------+
+|      1 | Raju | Savings  |
+|      2 | Sham | Savings  |
++--------+------+----------+
+
+$ insert into customers(acc_no , name) values(145,"Baburao"), (121,
+"TotolaBhai");
+$ select * from customers;
++--------+------------+----------+
+| acc_no | name       | acc_type |
++--------+------------+----------+
+|      1 | Raju       | Savings  |
+|      2 | Sham       | Savings  |
+|    121 | TotolaBhai | Savings  |
+|    145 | Baburao    | Savings  |
++--------+------------+----------+
+
+$ insert into customers(name) values("Raskhan");
+$ select * from customers;
++--------+------------+----------+
+| acc_no | name       | acc_type |
++--------+------------+----------+
+|      1 | Raju       | Savings  |
+|      2 | Sham       | Savings  |
+|    121 | TotolaBhai | Savings  |
+|    145 | Baburao    | Savings  |
+|    146 | Raskhan    | Savings  |
++--------+------------+----------+
+
+
+Alias
+=====
+    To do more readable
+
+$ select acc_no as "Account Number" from customers;
++----------------+
+| Account Number |
++----------------+
+|              1 |
+|              2 |
+|            121 |
+|            145 |
+|            146 |
++----------------+
+
+Even more than one poxsib
+$ select acc_no as "Account Number", name as "Customer Names" from customers;
++----------------+----------------+
+| Account Number | Customer Names |
++----------------+----------------+
+|              1 | Raju           |
+|              2 | Sham           |
+|            121 | TotolaBhai     |
+|            145 | Baburao        |
+|            146 | Raskhan        |
++----------------+----------------+
