@@ -1,0 +1,104 @@
+
+NOT NULL
+========
+
+$ desc customers;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | int          | YES  |     | NULL    |       |
+| name  | varchar(100) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+
+$ insert into customers(id)   values (132);
+$ select * from customers;
++------+---------+
+| id   | name    |
++------+---------+
+|  411 | Pranjal |
+|  101 | Ajmal   |
+|  132 | NULL    |
++------+---------+
+
+$ insert into customers values(NULL, NULL); 
+Possible
+
+    There is no sense in adding the null, to handle this
+
+$ Create table customers 
+    (
+        id int not null ,
+        name varchar(100) not null
+    );
+
+$  desc customer2;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | int          | NO   |     | NULL    |       |
+| name  | varchar(100) | NO   |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+
+Now we can't insert the null either way
+
+
+
+Default
+=======
+    While inserting when we not assign value for particular column, default assigned to it. 
+    Can used when we know that many will value will same in list
+
+    $ create table customer3 ( id int not null , name varchar(50) not null, acc_type varchar(100) not null default 'Savings'); 
+
+    $ desc customer3;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| id       | int          | NO   |     | NULL    |       |
+| name     | varchar(50)  | NO   |     | NULL    |       |
+| acc_type | varchar(100) | NO   |     | Savings |       |
++----------+--------------+------+-----+---------+-------+
+
+    $ insert into customer3(id , name) values(123, "Kr");
+
+    $ select * from customer3;
++-----+------+----------+
+| id  | name | acc_type |
++-----+------+----------+
+| 123 | Kr   | Savings  |
++-----+------+----------+
+
+
+
+
+
+Primary Key
+===========
+    The primary key constraint uniquely indentifies each record in table .
+    Primary key must contain UNIQUE values , & vannot containe NULL values.
+    A table can have only ONE primary key
+
+    $ create table customeers4 ( acc_no int primary key, name varchar(50) not null , acc_type  varchar(50) not null default 'Savuings');
+
+    $  desc customeers4 ;
++----------+-------------+------+-----+----------+-------+
+| Field    | Type        | Null | Key | Default  | Extra |
++----------+-------------+------+-----+----------+-------+
+| acc_no   | int         | NO   | PRI | NULL     |       |
+| name     | varchar(50) | NO   |     | NULL     |       |
+| acc_type | varchar(50) | NO   |     | Savuings |       |
++----------+-------------+------+-----+----------+-------+
+
+$ insert into customeers4(acc_no, name) values(001, "Pranjal");
+
+$ select * from customeers4;
++--------+---------+----------+
+| acc_no | name    | acc_type |
++--------+---------+----------+
+|      1 | Pranjal | Savuings |
++--------+---------+----------+
+
+$ insert into customeers4(acc_no, name) values(001, "Ram");
+ERROR 1062 (23000): Duplicate entry '1' for key 'customeers4.PRIMARY'
+
+Primary keys must contain UNIQUE values, and cannot contain NULL values

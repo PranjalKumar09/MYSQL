@@ -51,3 +51,6 @@ delete from students where id=104;
 $ drop table <table>;
 To delete entire the table 
 
+
+
+
