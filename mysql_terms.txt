@@ -177,3 +177,72 @@ $ select acc_no as "Account Number", name as "Customer Names" from customers;
 |            145 | Baburao        |
 |            146 | Raskhan        |
 +----------------+----------------+
+
+
+
+
+DISTINCT
+========
+
+    $ select dept from employee2;
++---------+
+| dept    |
++---------+
+| Loan    |
+| Cash    |
+| Loan    |
+| Account |
+| Deposit |
++---------+
+5 rows in set (0.00 sec)
+
+    $ select distinct dept from employee2;
++---------+
+| dept    |
++---------+
+| Loan    |
+| Cash    |
+| Account |
+| Deposit |
++---------+
+
+
+
+    When it used with multiple column then only distinct combo will come (means it will not for particular check with all distinct columns)
+
+
+    $  select fname , lname from employee2;
++---------+---------+
+| fname   | lname   |
++---------+---------+
+| Raju    | Rastogi |
+| Sham    | Mohan   |
+| Baburao | Apte    |
+| Paul    | Philip  |
+| Alex    | Watt    |
+| Baburao | Apte    |
++---------+---------+
+
+    $ select distinct fname , lname from employee2;
++---------+---------+
+| fname   | lname   |
++---------+---------+
+| Raju    | Rastogi |
+| Sham    | Mohan   |
+| Baburao | Apte    |
+| Paul    | Philip  |
+| Alex    | Watt    |
++---------+---------+
+
+
+
+
+
+
+
+    
+
+
+
+
+
