@@ -1,0 +1,15 @@
+
+
+select * from  employees where char_length(name)=4;
+or 
+select * from employees where name like "____";
++--------+------+------------+---------+
+| emp_id | name | desig      | dept    |
++--------+------+------------+---------+
+|    101 | Raju | Manager    | Loan    |
+|    103 | Paul | Associate  | IT      |
+|    104 | Alex | Accountant | Account |
++--------+------+------------+---------+
+
+
+1

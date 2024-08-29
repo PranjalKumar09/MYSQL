@@ -269,6 +269,204 @@ DISTINCT
 +--------+---------+---------+------------+---------+
 
 
-    Now we can do do sorting by prefrence also   ORDER BY   prefer1_column1 , prefer2_column2
+    Now we can do do sorting by prefrence also   ORDER BY   column1 ,column2 ---;
+
+    column1 is sorted first , then if column1 same then rest column2 prefer like this continues.
 
 
+
+LIKE
+=====
+    Even works bettwer with different case (lowercase or uppercase)
+
+    $ select * from  employees;
++--------+--------+------------+---------+
+| emp_id | name   | desig      | dept    |
++--------+--------+------------+---------+
+|    101 | Raju   | Manager    | Loan    |
+|    103 | Paul   | Associate  | IT      |
+|    104 | Alex   | Accountant | Account |
+|    105 | Victor | Associate  | Deposit |
++--------+--------+------------+---------+
+
+    $ select * from employees where desig like "%mAna%";
++--------+------+---------+------+
+| emp_id | name | desig   | dept |
++--------+------+---------+------+
+|    101 | Raju | Manager | Loan |
++--------------------------------+
+
+
+    $ select * from  employees where name like "_a__";
++--------+------+-----------+------+
+| emp_id | name | desig     | dept |
++--------+------+-----------+------+
+|    101 | Raju | Manager   | Loan |
+|    103 | Paul | Associate | IT   |
++--------+------+-----------+------+
+
+
+
+LIMIT 
+=====
+    Its for showing only limited columns
+
+    $ select * from  employee2 ;
++--------+---------+----------+------------+------------+
+| emp_id | fname   | lname    | desig      | dept       |
++--------+---------+----------+------------+------------+
+|    101 | Raju    | Rastogi  | Manager    | Loan       |
+|    102 | Sham    | Mohan    | Casier     | Cash       |
+|    103 | Baburao | Apte     | Associate  | Loan       |
+|    104 | Paul    | Philip   | Accountant | Account    |
+|    105 | Alex    | Watt     | Associate  | Deposit    |
+|    106 | Baburao | Apte     | Casier     | Account    |
+|    107 | James   | Moore    | Assistant  | HR         |
+|    108 | David   | Brown    | Consultant | Sales      |
+|    109 | David   | Davis    | Cashier    | Sales      |
+|    110 | David   | Smith    | Analyst    | Operations |
+|    111 | Michael | Brown    | Assistant  | Credit     |
+|    112 | Lisa    | Miller   | Officer    | Sales      |
+|    113 | Emily   | Johnson  | Clerk      | Accounts   |
+|    114 | John    | Wilson   | Executive  | Compliance |
+
+
+
+    $  select * from  employee2 limit 4 ;
++--------+---------+---------+------------+---------+
+| emp_id | fname   | lname   | desig      | dept    |
++--------+---------+---------+------------+---------+
+|    101 | Raju    | Rastogi | Manager    | Loan    |
+|    102 | Sham    | Mohan   | Casier     | Cash    |
+|    103 | Baburao | Apte    | Associate  | Loan    |
+|    104 | Paul    | Philip  | Accountant | Account |
++--------+---------+---------+------------+---------+
+
+
+    It can also be used with two to perform as range 
+    LIMIT <start-1>, <no of terms> ;
+
+
+   $ select * from  employee2 limit 4,5;
++--------+---------+---------+------------+------------+
+| emp_id | fname   | lname   | desig      | dept       |
++--------+---------+---------+------------+------------+
+|    105 | Alex    | Watt    | Associate  | Deposit    |
+|    106 | Baburao | Apte    | Casier     | Account    |
+|    107 | James   | Moore   | Assistant  | HR         |
+|    108 | David   | Brown   | Consultant | Sales      |
+|    109 | David   | Davis   | Cashier    | Sales      |
++--------+---------+---------+------------+------------+
+ 
+
+   $ select * from employee2 order by fname desc limit 1;
++--------+-------+-------+--------+------+--------+
+| emp_id | fname | lname | desig  | dept | salary |
++--------+-------+-------+--------+------+--------+
+|    102 | Sham  | Mohan | Casier | Cash |  25000 |
++--------+-------+-------+--------+------+--------+
+
+
+
+
+    COUNT 
+    ====== 
+
+   $  select count(*) from employees;
++----------+
+| count(*) |
++----------+
+|        4 |
++----------+
+
+    $ select count(name) from employees;
++-------------+
+| count(name) |
++-------------+
+|           4 |
++-------------+
+
+
+    $ select count(desig) from employees;
++--------------+
+| count(desig) |
++--------------+
+|            4 |
++--------------+
+
+    To select the disctinct the desig;
+    $ select count(distinct desig) from employees;
++-----------------------+
+| count(distinct desig) |
++-----------------------+
+|                     3 |
++-----------------------+
+
+    Also can used in conditional counts 
+    $ select count(*) from employee2 where dept="HR";
++----------+
+| count(*) |
++----------+
+|       27 |
++----------+
+
+
+    GROUP BY
+    ----- --
+    =========
+
+    $ SELECT DEPT  FROM employee2 GROUP by dept;
++------------+
+| DEPT       |
++------------+
+| Loan       |
+| Cash       |
+| Account    |
+| Deposit    |
+| HR         |
+| Sales      |
+| Operations |
+| Credit     |
+| Accounts   |
+| Compliance |
+| IT         |
+| Loans      |
++------------+
+
+    $ SELECT DEPT , COUNT(FNAME) from employee2 group by dept;
++------------+--------------+
+| DEPT       | COUNT(FNAME) |
++------------+--------------+
+| Loan       |            2 |
+| Cash       |            1 |
+| Account    |            2 |
+| Deposit    |            1 |
+| HR         |           27 |
+| Sales      |           38 |
+| Operations |           34 |
+| Credit     |           40 |
+| Accounts   |           44 |
+| Compliance |           41 |
+| IT         |           42 |
+| Loans      |           34 |
++------------+--------------+
+
+    Agrreate function dont work in ditinct , by it work in group by
+
+
+
+
+    MAX & MIN
+    ===========
+    
+        $  select * from employee2 limit 4;
++--------+---------+---------+------------+---------+--------+
+| emp_id | fname   | lname   | desig      | dept    | salary |
++--------+---------+---------+------------+---------+--------+
+|    101 | Raju    | Rastogi | Manager    | Loan    |  25000 |
+|    102 | Sham    | Mohan   | Casier     | Cash    |  25000 |
+|    103 | Baburao | Apte    | Associate  | Loan    |  25000 |
+|    104 | Paul    | Philip  | Accountant | Account |  25000 |
++--------+---------+---------+------------+---------+--------+
+
+    
