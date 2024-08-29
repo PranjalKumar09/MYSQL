@@ -1,0 +1,47 @@
+
+Decimal
+========
+    13.35
+
+    $ desc num;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| price | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+    $insert into num values (15.6 );
+    $insert into num values (15.6);
+
+
+    $ select * from num;
++-------+
+| price |
++-------+
+|    16 |
+|    16 |
++-------+
+
+
+
+    DECIMAL (<total digits> ,< digit after decimal > );
+
+
+    $ desc num2;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| price | decimal(5,2) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+
+    $ insert into num2 values(144.78);
+Query OK, 1 row affected (0.01 sec)
+
+    $ select * from num2;
++--------+
+| price  |
++--------+
+| 144.78 |
+| 144.78 |
++--------+
