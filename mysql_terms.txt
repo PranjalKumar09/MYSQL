@@ -459,14 +459,85 @@ LIMIT
     MAX & MIN
     ===========
     
-        $  select * from employee2 limit 4;
-+--------+---------+---------+------------+---------+--------+
-| emp_id | fname   | lname   | desig      | dept    | salary |
-+--------+---------+---------+------------+---------+--------+
-|    101 | Raju    | Rastogi | Manager    | Loan    |  25000 |
-|    102 | Sham    | Mohan   | Casier     | Cash    |  25000 |
-|    103 | Baburao | Apte    | Associate  | Loan    |  25000 |
-|    104 | Paul    | Philip  | Accountant | Account |  25000 |
-+--------+---------+---------+------------+---------+--------+
+        $  select max(salary) from employee2;
++-------------+
+| max(salary) |
++-------------+
+|       99978 |
++-------------+
+1 row in set (0.00 sec)
+
+     $ select min(salary) from employee2;
++-------------+
+| min(salary) |
++-------------+
+|       10651 |
++-------------+
+
+
+
+
+
+    SUB QUERIS
+    ============
+    $ select emp_id , fname ,  salary from employee2 where salary = (select max(salary) from employee2);
++--------+-------+--------+
+| emp_id | fname | salary |
++--------+-------+--------+
+|    329 | Sarah |  99978 |
++--------+-------+--------+
+
+
+
+    SUM & AVG
+    =========
+     $ select sum(salary) from employee2;
++-------------+
+| sum(salary) |
++-------------+
+|    16663255 |
++-------------+
+
+    $  select avg(salary) from employee2;
++-------------+
+| avg(salary) |
++-------------+
+|  54455.0817 |
++-------------+
+
+
+    $  SELECT dept ,COUNT(emp_id), SUM(salary) from employee2 group by dept;
++------------+---------------+-------------+
+| dept       | COUNT(emp_id) | SUM(salary) |
++------------+---------------+-------------+
+| Loan       |             2 |       91208 |
+| Cash       |             1 |       12300 |
+| Account    |             2 |       84997 |
+| Deposit    |             1 |       23945 |
+| HR         |            27 |     1337107 |
+| Sales      |            38 |     2059159 |
+| Operations |            34 |     2039809 |
+| Credit     |            40 |     1969506 |
+| Accounts   |            44 |     2534715 |
+| Compliance |            41 |     2219227 |
+| IT         |            42 |     2326295 |
+| Loans      |            34 |     1964987 |
++------------+---------------+-------------+
 
     
+    Sum by conditions
+
+    $ select sum(salary) from employee2 where dept="Loan";
++-------------+
+| sum(salary) |
++-------------+
+|       91208 |
++-------------+
+
+
+
+
+
+
+
+
