@@ -45,3 +45,119 @@ Query OK, 1 row affected (0.01 sec)
 | 144.78 |
 | 144.78 |
 +--------+
+
+    Now at decimal(5,2) inserting 
+        1557.8 will not be inserted
+        15.878 will inserted but at table show rounded off (15.88)
+
+
+FLOAT, DOUBLE 
+==============
+    Float - upto ~7 digits, takes 4 bytes of memory
+    Double - upto ~15 digits, takes 8 bytes of memory 
+
+    $ create table num3(f float , d double);
+    $ insert into num3 values(123.456, 123.456);
+    $ insert into num3 values(123.123456789, 123.123456789); 
+    $ select * from num3;
++---------+---------------+
+| f       | d             |
++---------+---------------+
+| 123.456 |       123.456 |
+| 123.123 | 123.123456789 |
++---------+---------------+
+
+
+
+
+DATE, TIME , DATETIME
+=====================
+    DATE  yyyy-mm-dd
+    TIME  hh-mm-ss
+    DATETIME yyyy-mm-dd hh-mm-ss
+
+    $ CREATE table num4 (d date,t time ,dt datetime);
+    $ insert into num4 values("2024-08-18","20:00:00","2024-08-18 20:00:00");
+    $ insert into num4 values("2024-08:18","20:00:00","2024-08-18 20:00:00");
+    
+    While we can inserting can change colons (- to : or vise versa even customized) this not cause error saves in Default format only
+
+    
+DATE TIME FUNCTIONS
+====================
+    CURDATE, CURTIME , NOW 
+
+    CURDATE() -  yyyy-mm-dd
+    CURTIME() -  hh:mm:ss
+    NOW() - yyyy-mm-dd hh:mm:ss
+
+    $ insert into num4 values(curdate(), curtime(), now());
+    $ select * from num4;
++------------+----------+---------------------+
+| d          | t        | dt                  |
++------------+----------+---------------------+
+| 2024-08-18 | 20:00:00 | 2024-08-18 20:00:00 |
+| 2024-08-18 | 20:00:00 | 2024-08-18 20:00:00 |
+| 2024-08-30 | 20:19:15 | 2024-08-30 20:19:15 |
++------------+----------+---------------------+
+
+
+    DAYNAME , DAYOFMONTH, DAYOFWEEK , monthname, YEAR, HOUR
+
+    $ select dayname("2025-12-18");
++-----------------------+
+| dayname("2025-12-18") |
++-----------------------+
+| Thursday              |
++-----------------------+
+
+    $ select dayofmonth("2025-12-18");
++--------------------------+
+| dayofmonth("2025-12-18") |
++--------------------------+
+|                       18 |
++--------------------------+
+
+    $ select dayofweek("2025-12-18");
++-------------------------+
+| dayofweek("2025-12-18") |
++-------------------------+
+|                       5 |
++-------------------------+
+
+    $ select dayofweek(curdate());
++----------------------+
+| dayofweek(curdate()) |
++----------------------+
+|                    6 |
++----------------------+
+
+    $ select monthname(curdate());
++----------------------+
+| monthname(curdate()) |
++----------------------+
+| August               |
++----------------------+
+
+    $ select YEAR(curdate());
++-----------------+
+| YEAR(curdate()) |
++-----------------+
+|            2024 |
++-----------------+
+
+    $ SELECT HOUR(curtime());
++-----------------+
+| HOUR(curtime()) |
++-----------------+
+|              20 |
++-----------------+
+
+
+Sometimes cause unknown exection in wrong time
+    $ SELECT HOUR("99:12:14");
++------------------+
+| HOUR("99:12:14") |
++------------------+
+|               99 |
++------------------+
