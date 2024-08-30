@@ -1,0 +1,53 @@
+
+Relational Operators
+====================
+    <,  > ,<= , >= , = , !=
+
+
+    $ select * from employee2 where salary>50000 limit 4;
++--------+---------+---------+------------+---------+--------+
+| emp_id | fname   | lname   | desig      | dept    | salary |
++--------+---------+---------+------------+---------+--------+
+|    101 | Raju    | Rastogi | Manager    | Loan    |  68647 |
+|    106 | Baburao | Apte    | Casier     | Account |  61965 |
+|    108 | David   | Brown   | Consultant | Sales   |  96017 |
+|    109 | David   | Davis   | Cashier    | Sales   |  93030 |
++--------+---------+---------+------------+---------+--------+
+
+    $ select * from employee2 where salary<50000 limit 4;
++--------+---------+--------+------------+---------+--------+
+| emp_id | fname   | lname  | desig      | dept    | salary |
++--------+---------+--------+------------+---------+--------+
+|    102 | Sham    | Mohan  | Casier     | Cash    |  12300 |
+|    103 | Baburao | Apte   | Associate  | Loan    |  22561 |
+|    104 | Paul    | Philip | Accountant | Account |  23032 |
+|    105 | Alex    | Watt   | Associate  | Deposit |  23945 |
++--------+---------+--------+------------+---------+--------+
+
+
+Logical Operators
+==================
+    And, or
+
+
+    $ select * from employee2 where salary<50000  and desig="Cashier" limit 4;
++--------+-------+----------+---------+------------+--------+
+| emp_id | fname | lname    | desig   | dept       | salary |
++--------+-------+----------+---------+------------+--------+
+|    115 | John  | Moore    | Cashier | Credit     |  33903 |
+|    126 | Alex  | Moore    | Cashier | Compliance |  23839 |
+|    138 | Alex  | Davis    | Cashier | Accounts   |  11594 |
+|    178 | Jane  | Williams | Cashier | Credit     |  48036 |
++--------+-------+----------+---------+------------+--------+
+
+    $ select * from employee2 where salary>50000  or desig="Casier" limit 4;
++--------+---------+---------+------------+---------+--------+
+| emp_id | fname   | lname   | desig      | dept    | salary |
++--------+---------+---------+------------+---------+--------+
+|    101 | Raju    | Rastogi | Manager    | Loan    |  68647 |
+|    102 | Sham    | Mohan   | Casier     | Cash    |  12300 |
+|    106 | Baburao | Apte    | Casier     | Account |  61965 |
+|    108 | David   | Brown   | Consultant | Sales   |  96017 |
++--------+---------+---------+------------+---------+--------+
+
+

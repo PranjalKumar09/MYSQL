@@ -106,6 +106,7 @@ Primary keys must contain UNIQUE values, and cannot contain NULL values
 
 Auto Increment
 ---------------
+It applies only to primary key 
 $ create table customers (acc_no int primary key auto_increment, name varchar(100) not null,  acc_type varchar(50) not null default 'Savings');
 $  desc customers;
 +----------+--------------+------+-----+---------+----------------+
@@ -305,6 +306,7 @@ LIKE
 |    103 | Paul | Associate | IT   |
 +--------+------+-----------+------+
 
+    $ select * from employee2  where fname like "L*" or fname like "%s"1 row in set (0.01 sec)
 
 
 LIMIT 
@@ -565,3 +567,182 @@ DEFAULT and ON UPDATE
     
 
 
+IN and NOT IN
+===============
+    $ SELECT * from employee2 where fname in ('Jane' ,'David') limit 10; 
++--------+-------+----------+------------+------------+--------+
+| emp_id | fname | lname    | desig      | dept       | salary |
++--------+-------+----------+------------+------------+--------+
+|    108 | David | Brown    | Consultant | Sales      |  96017 |
+|    109 | David | Davis    | Cashier    | Sales      |  93030 |
+|    110 | David | Smith    | Analyst    | Operations |  57979 |
+|    122 | Jane  | Johnson  | Executive  | Loans      |  38414 |
+|    129 | Jane  | Brown    | Consultant | Compliance |  84416 |
+|    131 | Jane  | Jones    | Officer    | Compliance |  17439 |
+|    137 | Jane  | Jones    | Officer    | Compliance |  31988 |
+|    140 | David | Miller   | Executive  | HR         |  60610 |
+|    154 | Jane  | Miller   | Clerk      | Operations |  56079 |
+|    159 | David | Williams | Officer    | IT         |  97338 |
++--------+-------+----------+------------+------------+--------+
+
+    $ SELECT * from employee2 where fname not in ('Jane' ,'David') limit
++--------+---------+---------+------------+----------+--------+
+| emp_id | fname   | lname   | desig      | dept     | salary |
++--------+---------+---------+------------+----------+--------+
+|    101 | Raju    | Rastogi | Manager    | Loan     |  68647 |
+|    102 | Sham    | Mohan   | Casier     | Cash     |  12300 |
+|    103 | Baburao | Apte    | Associate  | Loan     |  22561 |
+|    104 | Paul    | Philip  | Accountant | Account  |  23032 |
+|    105 | Alex    | Watt    | Associate  | Deposit  |  23945 |
+|    106 | Baburao | Apte    | Casier     | Account  |  61965 |
+|    107 | James   | Moore   | Assistant  | HR       |  37101 |
+|    111 | Michael | Brown   | Assistant  | Credit   |  86744 |
+|    112 | Lisa    | Miller  | Officer    | Sales    |  47637 |
+|    113 | Emily   | Johnson | Clerk      | Accounts |  22605 |
++--------+---------+---------+------------+----------+--------+
+
+
+
+
+BETWEEN
+=======
+    Employees whoes salary is more than 10000 and Less than 40000;
+
+    $ SELECT * from employee2 where salary<=40000 and salary>=10000;
+    $ SELECT * from employee2 where salary between 10000 and 40000 ;
+    both work same ranges included too.
+
+
+CASE 
+=====
+    $ select  emp_id , fname , 
+    case 
+        when salary >= 40000 then "High Salary"
+        else "Low Salary"
+    end as "Salary Category"
+    from employee2;
+
++--------+---------+-----------------+
+| emp_id | fname   | Salary Category |
++--------+---------+-----------------+
+|    101 | Raju    | High Salary     |
+|    102 | Sham    | Low Salary      |
+|    103 | Baburao | Low Salary      |
+|    104 | Paul    | Low Salary      |
+|    105 | Alex    | Low Salary      |
++--------+---------+-----------------+
+
+
+    $ select  emp_id , fname , case 
+    when salary >= 70000 then "High Salary" 
+    WHEN salary >= 35000 then "Mid Salary" 
+    else "Low Salary" end as "Salary Category" 
+    from employee2 LIMIT 10;
++--------+---------+-----------------+
+| emp_id | fname   | Salary Category |
++--------+---------+-----------------+
+|    101 | Raju    | Mid Salary      |
+|    102 | Sham    | Low Salary      |
+|    103 | Baburao | Low Salary      |
+|    104 | Paul    | Low Salary      |
+|    105 | Alex    | Low Salary      |
+|    106 | Baburao | Mid Salary      |
+|    107 | James   | Mid Salary      |
+|    108 | David   | High Salary     |
+|    109 | David   | High Salary     |
+|    110 | David   | Mid Salary      |
++--------+---------+-----------------+
+
+    $ select emp_id , case when salary != 0 then salary/80 end as "Salary in Dollar" from employee2;
++--------+------------------+
+| emp_id | Salary in Dollar |
++--------+------------------+
+|    102 |         153.7500 |
+|    103 |         282.0125 |
+|    101 |         858.0875 |
++--------+------------------+
+
+
+ISNULL  & NOR LIKE
+==================
+    Is null give true on null values 
+    $ select * from employee2  where fname is null;
+
+
+    $ select * from employee2  where fname like "R%";
++--------+-------+---------+---------+------+--------+
+| emp_id | fname | lname   | desig   | dept | salary |
++--------+-------+---------+---------+------+--------+
+|    101 | Raju  | Rastogi | Manager | Loan |  68647 |
++--------+-------+---------+---------+------+--------+
+
+    $ select * from employee2  where fname not  like "R%";
++--------+---------+----------+------------+------------+--------+
+| emp_id | fname   | lname    | desig      | dept       | salary |
++--------+---------+----------+------------+------------+--------+
+|    102 | Sham    | Mohan    | Casier     | Cash       |  12300 |
+|    103 | Baburao | Apte     | Associate  | Loan       |  22561 |
+|    104 | Paul    | Philip   | Accountant | Account    |  23032 |
+|    105 | Alex    | Watt     | Associate  | Deposit    |  23945 |
++--------+---------+----------+------------+------------+--------+
+
+
+
+
+UNIQUE CONSTRAINT
+=================
+    Constrain are additonaly fewautres to given to columns, all values in colun are uniquely
+    $ create  table contact (mob varchar(14) unique);
+
+CHECK CONSTRAINT
+=================
+    Like checking phone no of 10 digits ;
+
+    $ create table contacts(name varchar(50), mob varchar(15) unique check (length(mob) >= 10));
+    
+    Now to third person he could'nt able to understand why this error happens
+    $ insert into contacts values("james" , "091234");
+ERROR 3819 (HY000): Check constraint 'contacts_chk_1' is violated.
+    
+    
+    To above case 
+    $ create table contacts2(
+        name varchar(50), 
+        mob varchar(15) unique, 
+        constraint mob_no_less_than_10_digits check (length(mob) >= 10));
+
+    $ insert into contacts2 values("james" , "091234");
+ERROR 3819 (HY000): Check constraint 'mob_no_less_than_10_digits' is violated.
+
+
+
+
+ALTER 
+=====
+    Adding/droping
+    --------------
+    It is for changing structure of table (adding or droping the table)
+
+
+    $ ALTER TABLE contacts ADD COLUMN city varchar(40);
+    $ alter table contacts drop column city;
+
+
+    Rename
+    ------
+    Renaming Column Name : ALTER TABLE bankTable RENAME COLUMN old_emp TO emp_id;
+    Renaming Table Name : 
+        Method 1 => ALTER TABLE bankTable RENAME To bankTableNew;
+        Method 2 => RENAME TABLE bankTable  To bankTableNew;
+
+
+    If repective column has used in some constraint then we must delete that first in order to delete it .
+
+
+    MODIFY
+    ------
+    like chaning datatype , Extra, Default of columns;
+
+    ALTER TABLE  TableName  COLUMN  ColumnName  ----;
+
+    $ alter table temp2 modify Id INT NOT NULL;
