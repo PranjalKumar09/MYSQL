@@ -538,6 +538,30 @@ LIMIT
 
 
 
+DEFAULT and ON UPDATE 
+=====================
+    $ create table blogs( blog varchar(150), 
+    ct datetime default current_timestamp, 
+    ut datetime on update current_timestamp);
 
+    This can use in like in tweets ine time stamp created on creation time , other when we are updating (on update).
+
+    $ insert into blogs (blog) values("First Blog");
+    $ select * from blogs;
++------------+---------------------+------+
+| blog       | ct                  | ut   |
++------------+---------------------+------+
+| First Blog | 2024-08-30 21:40:43 | NULL |
++------------+---------------------+------+
+
+    $ update blogs set blog= "First Blog Updated";
+    $ select * from blogs;
++--------------------+---------------------+---------------------+
+| blog               | ct                  | ut                  |
++--------------------+---------------------+---------------------+
+| First Blog Updated | 2024-08-30 21:40:43 | 2024-08-30 21:41:50 |
++--------------------+---------------------+---------------------+
+ 
+    
 
 
