@@ -1,0 +1,10 @@
+
+Types of Relationships
+=======================
+    * One to One : There will only one record (repition) of particular value from derived
+    * One to Many : There can multiple record (repition) of particular value from derived
+    * Many to Many : Like one author can have muliple books , and one books can have muliple authors
+
+FOREGIN KEY
+===========
+
