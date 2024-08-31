@@ -910,4 +910,241 @@ DELIMITER ;
 
 WINDOW FUNCTION
 ===============
-    Also know as analy
+    Also know as analytic , functions allow you to perform functions allow you to perform  calculations across set of rows related to current row. It provide better visiblity 
+    Defined by   OVER()   clause 
+
+    OVER have its own functions like ROW_NUMBER, RANK , DENSERANK ,LAG ,LEAD 
+
+    $  select sum(salary) from employee;
++-------------+
+| sum(salary) |
++-------------+
+|  7322803.61 |
++-------------+
+
+
+    $ select sum(salary) over() as sum_salary from employee;
++------------+
+| sum_salary |
++------------+
+| 7322803.61 |
+| 7322803.61 |
+| 7322803.61 |
+| 7322803.61 |
+| 7322803.61 |
+| 7322803.61 |
+| 7322803.61 |
+| 7322803.61 |
+| 7322803.61 |
++------------+
+
+
+    $ select fname ,salary  ,sum(salary) over() as sum_salary from employee;
++---------+-----------+------------+
+| fname   | salary    | sum_salary |
++---------+-----------+------------+
+| Michael | 103384.11 | 7322803.61 |
+| Anna    |  70904.88 | 7322803.61 |
+| Sarah   |  33477.43 | 7322803.61 |
+| Laura   |  89394.96 | 7322803.61 |
+| Laura   |  90606.97 | 7322803.61 |
++---------+-----------+------------+
+
+    $ select fname ,salary  ,sum(salary) over(order by emp_id) as sum_salary from employee;
++---------+-----------+------------+
+| fname   | salary    | sum_salary |
++---------+-----------+------------+
+| Michael | 103384.11 |  103384.11 |
+| Anna    |  70904.88 |  174288.99 |
+| Sarah   |  33477.43 |  207766.42 |
+| Laura   |  89394.96 |  297161.38 |
+| Laura   |  90606.97 |  387768.35 |
+    '            '           '
++---------+-----------+------------+
+
+
+
+# PARTITION not only devide but also sort according to field 
+    $ SELECT fname, 
+       salary, 
+       SUM(salary) OVER (PARTITION BY dept_name) AS sum_salary 
+FROM employee;
++---------+-----------+------------+
+| fname   | salary    | sum_salary |
++---------+-----------+------------+
+| Alex    |  48360.84 | 1685442.62 |
+| Chris   |  73737.61 | 1685442.62 |
+| Michael |  38259.50 | 1249006.87 |
+| Emily   |  87685.61 | 1249006.87 |
+| Jane    |  44057.78 | 1249006.87 |
++---------+-----------+------------+
+
+    $ SELECT fname, 
+       salary, 
+       MAX(salary) OVER (PARTITION BY dept_name) AS sum_salary 
+FROM employee;
++---------+-----------+------------+
+| fname   | salary    | sum_salary |
++---------+-----------+------------+
+| Alex    |  48360.84 |  109953.06 |
+| Chris   |  86914.53 |  109953.06 |
+| Michael |  38259.50 |  112657.43 |
+| Chris   |  96339.78 |  112657.43 |
+| Emily   |  87685.61 |  112657.43 |
+| Jane    |  44057.78 |  112657.43 |
++---------+-----------+------------+
+
+    $  SELECT ROW_NUMBER() OVER() as row_no,emp_id, fname,  dept_name  , salary  FROM employee;
++--------+--------+---------+-----------+-----------+
+| row_no | emp_id | fname   | dept_name | salary    |
++--------+--------+---------+-----------+-----------+
+|      1 |      1 | Michael | Marketing | 103384.11 |
+|      2 |      2 | Anna    | Marketing |  70904.88 |
+|      3 |      3 | Sarah   | IT        |  33477.43 |
+|      4 |      4 | Laura   | HR        |  89394.96 |
+|      5 |      5 | Laura   | Finance   |  90606.97 |
+|      6 |      6 | Michael | Sales     |  41836.26 |
+|      7 |      7 | David   | HR        |  70946.57 |
+|      8 |      8 | Jane    | Sales     |  49905.65 |
+|      9 |      9 | Laura   | Sales     |  66410.64 |
+|     10 |     10 | Jane    | IT        |  53452.60 |
+|     11 |     11 | Emily   | IT        |  93738.44 |
+|     12 |     12 | David   | Finance   |  90345.14 |
+|     13 |     13 | John    | HR        | 101156.76 |
++--------+--------+---------+-----------+-----------+
+
+    $ SELECT ROW_NUMBER() OVER(ORDER BY salary) as row_no,emp_id, fname,  dept_name  , salary  FROM employee;
++--------+--------+---------+-----------+-----------+
+| row_no | emp_id | fname   | dept_name | salary    |
++--------+--------+---------+-----------+-----------+
+|      1 |     53 | Alex    | Sales     |  30560.46 |
+|      2 |     89 | David   | Sales     |  31865.14 |
+|      3 |     78 | Jane    | Sales     |  31868.27 |
+|      4 |     98 | David   | Sales     |  32960.48 |
+|      5 |      3 | Sarah   | IT        |  33477.43 |
+|      6 |     83 | Jane    | IT        |  36367.22 |
+|      7 |     30 | Michael | HR        |  38259.50 |
+|      8 |     23 | Sarah   | Finance   |  39339.81 |
+|      9 |     50 | Michael | HR        |  39543.20 |
+|     10 |     60 | David   | Finance   |  39768.75 |
++--------+--------+---------+-----------+-----------+
+ 
+    $ SELECT ROW_NUMBER() OVER(PARTITION BY dept_name) as row_no,emp_id, fname,  dept_name  , salary  FR
+OM employee;
+
++--------+--------+---------+-----------+-----------+
+| row_no | emp_id | fname   | dept_name | salary    |
++--------+--------+---------+-----------+-----------+
+|      1 |     14 | Alex    | Finance   |  48360.84 |
+|      2 |     32 | Chris   | Finance   |  86914.53 |
+|      3 |     33 | David   | Finance   | 103383.27 |
+|      4 |     87 | Sarah   | Finance   |  64405.16 |
+|      5 |     23 | Sarah   | Finance   |  39339.81 |
+|      6 |     77 | John    | Finance   |  77434.61 |
+|      7 |     21 | Jane    | Finance   |  50253.22 |
+|      8 |     72 | Laura   | Finance   | 109953.06 |
+|      9 |     27 | David   | Finance   |  99127.74 |
+|     10 |     36 | David   | Finance   |  77599.28 |
+|     11 |     82 | David   | Finance   |  85992.94 |
+|     12 |     91 | Michael | Finance   |  83047.85 |
+|     13 |     56 | Jane    | Finance   |  62197.67 |
+|     14 |     45 | Anna    | Finance   |  62930.83 |
+|     15 |     12 | David   | Finance   |  90345.14 |
+|     16 |     40 | Michael | Finance   |  96373.17 |
+|     17 |     96 | John    | Finance   |  46904.77 |
+|     18 |     60 | David   | Finance   |  39768.75 |
+|     19 |     80 | Anna    | Finance   |  71483.74 |
+|     20 |     99 | Alex    | Finance   |  60035.69 |
+|     21 |      5 | Laura   | Finance   |  90606.97 |
+|     22 |     42 | Chris   | Finance   |  73737.61 |
+|     23 |     66 | Jane    | Finance   |  65245.97 |
+|      1 |     30 | Michael | HR        |  38259.50 |
+|      2 |     31 | Chris   | HR        |  96339.78 |
+|      3 |     22 | Emily   | HR        |  87685.61 |
+|      4 |     79 | Jane    | HR        |  44057.78 |
+|      5 |     44 | Sarah   | HR        | 112657.43 |
+|      6 |     43 | Michael | HR        |  44094.82 |
+|      7 |     48 | Emily   | HR        |  91942.93 |
+|      8 |     26 | Alex    | HR        |  87977.22 |
+|      9 |     50 | Michael | HR        |  39543.20 |
+|     10 |     90 | Alex    | HR        |  98262.75 |
++--------+--------+---------+-----------+-----------+
+
+
+    Note-> In AS we cant use same pre defiened name 
+
+
+    1 came everywhere because we didnt said how to select rank 
+    $ SELECT emp_id, fname,  dept_name  , salary, RANK() OVER() AS rank_no  FROM employee;
++--------+---------+-----------+-----------+---------+
+| emp_id | fname   | dept_name | salary    | rank_no |
++--------+---------+-----------+-----------+---------+
+|      1 | Michael | Marketing | 103384.11 |       1 |
+|      2 | Anna    | Marketing |  70904.88 |       1 |
+|      3 | Sarah   | IT        |  33477.43 |       1 |
+|      4 | Laura   | HR        |  89394.96 |       1 |
+|      5 | Laura   | Finance   |  90606.97 |       1 |
+|      6 | Michael | Sales     |  41836.26 |       1 |
+|      7 | David   | HR        |  70946.57 |       1 |
++--------+---------+-----------+-----------+---------+
+
+    If two values have same Criteria value then both have same rank , next value have rank according to there position not according to previous rank. 
+    $  SELECT emp_id, fname,  dept_name  , salary, RANK() OVER(ORDER BY salary) AS rank_no  FROM employee;
++--------+---------+-----------+-----------+---------+
+| emp_id | fname   | dept_name | salary    | rank_no |
++--------+---------+-----------+-----------+---------+
+|     53 | Alex    | Sales     |  30560.46 |       1 |
+|     89 | David   | Sales     |  31865.14 |       2 |
+|     78 | Jane    | Sales     |  31865.14 |       2 |
+|     98 | David   | Sales     |  32960.48 |       4 |
+|      3 | Sarah   | IT        |  33477.43 |       5 |
++--------+---------+-----------+-----------+---------+
+
+    $ SELECT emp_id, fname,  dept_name  , salary, RANK() OVER(ORDER BY salary) AS rank_no  FROM employee;
+
++--------+---------+-----------+-----------+---------+
+| emp_id | fname   | dept_name | salary    | rank_no |
++--------+---------+-----------+-----------+---------+
+|     53 | Alex    | Sales     |  30560.46 |       1 |
+|     89 | David   | Sales     |  31865.14 |       2 |
+|     78 | Jane    | Sales     |  31865.14 |       3 |
+|     98 | David   | Sales     |  32960.48 |       4 |
+|      3 | Sarah   | IT        |  33477.43 |       5 |
++--------+---------+-----------+-----------+---------+
+
+    Lag, Leads applies to any single element
+    $ SELECT emp_id, fname,  dept_name  , salary, LAG(salary) OVER() AS lagg  FROM employee;
++--------+---------+-----------+-----------+-----------+
+| emp_id | fname   | dept_name | salary    | lagg      |
++--------+---------+-----------+-----------+-----------+
+|      1 | Michael | Marketing | 103384.11 |      NULL |
+|      2 | Anna    | Marketing |  70904.88 | 103384.11 |
+|      3 | Sarah   | IT        |  33477.43 |  70904.88 |
+|      4 | Laura   | HR        |  89394.96 |  33477.43 |
+|      5 | Laura   | Finance   |  90606.97 |  89394.96 |
++--------+---------+-----------+-----------+-----------+
+
+    $  SELECT emp_id, fname,  dept_name  , salary, LEAD(salary) OVER() AS lagg  FROM employee;
++--------+---------+-----------+-----------+-----------+
+| emp_id | fname   | dept_name | salary    | lagg      |
++--------+---------+-----------+-----------+-----------+
+|      1 | Michael | Marketing | 103384.11 |  70904.88 |
+|      2 | Anna    | Marketing |  70904.88 |  33477.43 |
+|     97 | John    | IT        |  33477.43 |  32960.48 |
+|     98 | David   | Sales     |  32960.48 | 104924.57 |
+|    100 | Michael | IT        | 104924.57 |      NULL |
++--------+---------+-----------+-----------+-----------+
+
+    $ SELECT emp_id, fname,  dept_name  , salary, salary - lag(salary) OVER(order by salary desc) AS lagg  FROM employee;
+
++--------+---------+-----------+-----------+----------+
+| emp_id | fname   | dept_name | salary    | lagg     |
++--------+---------+-----------+-----------+----------+
+|     62 | Anna    | Marketing | 118328.11 |     NULL |
+|     25 | Jane    | IT        | 117810.31 |  -517.80 |
+|     94 | Laura   | Sales     | 113070.33 | -4739.98 |
+|     51 | Laura   | Marketing | 113001.73 |   -68.60 |
+|     44 | Sarah   | HR        | 112657.43 |  -344.30 |
++--------+---------+-----------+-----------+----------+
+    
+
