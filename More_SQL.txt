@@ -1,0 +1,37 @@
+
+VIEW 
+====
+    To create virtual table 
+    CREATE VIEW virtual_table_name AS ---{expression}---;
+
+   $ CREATE VIEW info_inst AS select  student_name, count(course_name) from students join student_cours
+e on student_course.student_id=students.id join courses on student_course.course_id=courses.id group by student_name;
+
+    $ select * from info_inst;
++--------------+--------------------+
+| student_name | count(course_name) |
++--------------+--------------------+
+| Raju         |                  3 |
+| Sham         |                  2 |
+| Paul         |                  1 |
+| Alex         |                  1 |
++--------------+--------------------+
+
+
+    Real Table: Can be directly modified using INSERT, UPDATE, DELETE.
+    Virtual Table: Typically cannot be modified directly. Views can sometimes be updatable, but this depends on the complexity of the view.
+
+    Real Table: Data is persistent and remains stored until explicitly deleted.
+    Virtual Table: Exists temporarily when queried; views persist as definitions but do not store data.
+
+
+    Real Table: May be faster to query because the data is already stored and indexed.
+    Virtual Table: Can be slower because the data is generated dynamically, especially if the underlying query is complex.
+
+    * However we can see the data in many ways (select)
+    * If a table that is used in a view is dropped or removed from the database, the view will become invalid
+
+
+To delete this -> DROP VIEW info_inst;
+
+    

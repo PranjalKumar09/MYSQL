@@ -8,3 +8,226 @@ Types of Relationships
 FOREGIN KEY
 ===========
 
+    Table: Customers 
+
+        Primary Key 
+        cust_id  |  name  |  email 
+
+    Table: Orders
+
+        Primary Key                      Foregin Key 
+        order_id    |  date  |  amount  |  cust_Id 
+
+    $ create table customers(cust_id int  auto_increment primary key, name varchar(50), email varchar(50));
+    
+
+
+    $ select constraint_name , column_name , referenced_table_name from information_schema.key_column_usage where table_name='orders';
++-----------------+-------------+-----------------------+
+| CONSTRAINT_NAME | COLUMN_NAME | REFERENCED_TABLE_NAME |
++-----------------+-------------+-----------------------+
+| PRIMARY         | ord_id      | NULL                  |
+| orders_ibfk_1   | cust_id     | customers             |
++-----------------+-------------+-----------------------+
+
+
+    $  select * from customers;
++---------+------+--------------+
+| cust_id | name | email        |
++---------+------+--------------+
+|       1 | Raju | raju@abc.com |
+|       2 | Sham | sham@ema.com |
++---------+------+--------------+
+
+    $ insert into orders(date, amount, cust_id) values(curdate(), 105.38, 1);
+    
+    Error came because that cus_id which is foregin key not in cusotmers table
+    $ insert into orders(date, amount, cust_id) values(curdate(), 825, 10);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`bank_db`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`cust_id`) REFERENCES `customers` (`cust_id`))
+    
+
+
+
+
+
+
+JOIN
+====
+    Join operation is used to combine rows from two or more tables based on related column
+
+    Types of Join
+    -------------
+        Cross Join : Every row from one table is combined with every row from another table
+        ---------- 
+            $ select * from customers, orders;
+        Shows each combination possible (not even if matched) , It is repetive some data of any column like of .
+
+
+        Inner Join : Every row from one table is combined with every row from another table
+        ----------    
+            It will only show rows which has connectin
+            $  select * from customers inner join orders on orders.cust_id=customers.cust_id limit 5;
++---------+---------+-------------------+--------+------------+--------+---------+
+| cust_id | name    | email             | ord_id | date       | amount | cust_id |
++---------+---------+-------------------+--------+------------+--------+---------+
+|       1 | Raju    | raju@abc.com      |      1 | 2024-08-31 | 105.38 |       1 |
+|       1 | Raju    | raju@abc.com      |      3 | 2024-08-31 | 303.00 |       1 |
+|       7 | Michael | michael@gmail.com |      4 | 2024-08-31 | 971.47 |       7 |
+|      11 | Jane    | jane@gmail.com    |      8 | 2024-08-31 | 941.41 |      11 |
+|      16 | John    | john@gmail.com    |     17 | 2024-08-31 | 938.01 |      16 |
++---------+---------+-------------------+--------+------------+--------+---------+
+
+
+        $ select name , count(name) as TimesCame, sum(amount) as Total  from customers inner join orders on orders.cust_id=customers.cust_id group by name;
+
++---------+-----------+---------+
+| name    | TimesCame | Total   |
++---------+-----------+---------+
+| Raju    |         3 | 1292.38 |
+| Michael |         2 | 1127.89 |
+| Jane    |         3 | 1686.20 |
+| John    |         4 | 3319.21 |
+| Alex    |         2 |  661.94 |
+| Emily   |         7 | 3149.45 |
+| Sham    |         1 |  515.62 |
++---------+-----------+---------+
+
+        Left Join : Returns all rows from left (or first) table & matching rows from right 
+        ---- ----
+        $ select * from customers left join orders on orders.cust_id=customers.cust_id limit 5;
++---------+---------+-------------------+--------+------------+--------+---------+
+| cust_id | name    | email             | ord_id | date       | amount | cust_id |
++---------+---------+-------------------+--------+------------+--------+---------+
+|       1 | Raju    | raju@abc.com      |      1 | 2024-08-31 | 105.38 |       1 |
+|       1 | Raju    | raju@abc.com      |      3 | 2024-08-31 | 303.00 |       1 |
+|       1 | Raju    | raju@abc.com      |     75 | 2024-08-31 | 884.00 |       1 |
+|       2 | Sham    | sham@ema.com      |     22 | 2024-08-31 | 515.62 |       2 |
+|       3 | John    | NULL              |   NULL |       NULL |   NULL |    NULL |
++---------+---------+-------------------+--------+------------+--------+---------+
+
+
+
+
+        Right Join : Returns all rows from right (or last) table & matching rows from left  
+        ----- ----  
+        $ select * from customers right join orders on orders.cust_id=customers.cust_id;
+
+
+    NULL values will come if for particular foregin key not exist in other table 
+
+
+
+
+ON DELETE CASCADE
+=================
+    $ DELETE FROM customers WHERE name="Raju";
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`bank_db`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`cust_id`) REFERENCES `customers` (`cust_id`))
+
+     To handle it DELETE CASCADE can be used 
+    $ CREATE TABLE orders2 ( ord_id INT AUTO_INCREMENT PRIMARY KEY,  date DATE,  amount DECIMAL(10,2),  cust_id INT,  FOREIGN KEY (cust_id) REFERENCES customers(cust_id) ON DELETE CASCADE);
+
+    Note-> now must delete orders table before testing it
+    $ delete from customers where name="Raju";
+
+    It not cause error now , when delting it. It will delete same row in orders table too by which relation of particular row is there 
+
+
+
+
+
+
+
+
+
+
+MANY to MANY Relationships
+===========================
+
+    student 
+        * id 
+        * student_name 
+    
+    course
+        * id 
+        * course_name
+        * fees
+
+    student_course
+        * student_id
+        * course_id
+    
+    $ CREATE TABLE student_course (
+        student_id INT,
+        course_id INT,
+        FOREIGN KEY (student_id) REFERENCES students(id),
+        FOREIGN KEY (course_id) REFERENCES courses(id)
+    );
+
+
+
+
+    $ select * from students;
++----+--------------+
+| id | student_name |
++----+--------------+
+|  1 | Raju         |
+|  2 | Sham         |
+|  3 | Paul         |
+|  4 | Alex         |
++----+--------------+
+    $ select * from courses;
++-----+-------------+-------+
+| id  | course_name | fees  |
++-----+-------------+-------+
+| 101 | PD          |  3000 |
+| 102 | Java        |  5000 |
+| 103 | SQL         |  4000 |
+| 104 | Python      |  6000 |
+| 105 | Linux       | 10000 |
++-----+-------------+-------+
+    $ insert into student_course values  (1,101), (2,102), (2,105), (1,105), (3,103), (1,102), (4,104);
+    
+
+    FROM students, meaning the students table is the primary table we  starting with student_name .
+    $ SELECT student_name, course_name
+        FROM students
+        JOIN student_course ON student_course.student_id = students.id
+        JOIN courses ON student_course.course_id = courses.id;
++--------------+-------------+
+| student_name | course_name |
++--------------+-------------+
+| Raju         | PD          |
+| Raju         | Linux       |
+| Raju         | Java        |
+| Sham         | Java        |
+| Sham         | Linux       |
+| Paul         | SQL         |
+| Alex         | Python      |
++--------------+-------------+
+
+    $  select  course_name, count(student_name) from students join student_course on student_course.student_id=students.id join courses on student_course.course_id=courses.id group by course_name;
++-------------+---------------------+
+| course_name | count(student_name) |
++-------------+---------------------+
+| PD          |                   1 |
+| Linux       |                   2 |
+| Java        |                   2 |
+| SQL         |                   1 |
+| Python      |                   1 |
++-------------+---------------------+
+
+
+    $ select  student_name, count(course_name) from students join student_course on student_course.student_id=students.id join courses on student_course.course_id=courses.id group by student_name;
+
++--------------+--------------------+
+| student_name | count(course_name) |
++--------------+--------------------+
+| Raju         |                  3 |
+| Sham         |                  2 |
+| Paul         |                  1 |
+| Alex         |                  1 |
++--------------+--------------------+
+
+
+
+

@@ -746,3 +746,16 @@ ALTER
     ALTER TABLE  TableName  COLUMN  ColumnName  ----;
 
     $ alter table temp2 modify Id INT NOT NULL;
+
+
+
+IFNULL 
+=======
+    $ select id, cash ; 
+    Null values can come also 
+
+    $ select id, ifnull(cash,0) ; 
+    0 will replace in null values
+
+
+R
