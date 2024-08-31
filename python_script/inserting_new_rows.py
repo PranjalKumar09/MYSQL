@@ -15,6 +15,8 @@ last_names = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller
 designations = ["Manager", "Clerk", "Analyst", "Executive", "Officer", "Assistant", "Consultant", "Cashier"]
 departments = ["Loans", "Accounts", "Credit", "IT", "HR", "Operations", "Sales", "Compliance"]
 
+
+
 for _ in range(150):
     fname = random.choice(first_names)
     lname = random.choice(last_names)

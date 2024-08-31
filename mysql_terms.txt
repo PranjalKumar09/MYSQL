@@ -758,4 +758,156 @@ IFNULL
     0 will replace in null values
 
 
-R
+ROLL UP
+======= 
+    Always used with group by only
+    $ SELECT name, SUM(fees) 
+FROM school
+GROUP BY name WITH ROLLUP;
+
++--------+-----------+
+| name   | SUM(fees) |
++--------+-----------+
+| ajay   |        20 |
+| sanjay |        53 |
+| vijay  |        25 |
+| NULL   |        98 |
++--------+-----------+
+
+    $ SELECT IFNULL(name, "TOTAL"), SUM(fees) 
+FROM school
+GROUP BY name WITH ROLLUP;
+
++--------+-----------+
+| name   | SUM(fees) |
++--------+-----------+
+| ajay   |        20 |
+| sanjay |        53 |
+| vijay  |        25 |
+| TOTAL  |        98 |
++--------+-----------+
+
+
+
+STORED ROUNTINE
+===============
+    An SQL statement or set of SQL statements that can be stored on database server which can be call no of times 
+    
+    Types of STORED ROUNTINE
+        * STORED Procedure
+        * User Defined functions
+
+    STORED PROCEDURE 
+    ================
+        These are rountines that contain SQL statements & logic 
+        Often used for performing data modification , trasaction control, & executing sequences of statements 
+
+        now if we want to do this command small -> select * from customers order by acc_type;
+
+        # changing the delimiter $$
+        $ delimiter $$
+        $ create procedure emp_info()
+            begin
+            select * from customers order by acc_type;
+            end $$
+        $ delimiter ;
+        $ call emp_info();
++--------+------------+----------+
+| acc_no | name       | acc_type |
++--------+------------+----------+
+|      1 | Raju       | Savings  |
+|      2 | Sham       | Savings  |
+|    121 | TotolaBhai | Savings  |
+|    145 | Baburao    | Savings  |
+|    146 | Raskhan    | Savings  |
++--------+------------+----------+
+
+        
+        Argument passing  like $ select * from customers where name="Baburao";
+        $  delimiter $$
+        $ create procedure emp_info2(in p_fname varchar(50)) begin select * from customers where name=p_fname; end$$
+        $ delimiter ;
+
+        $ call emp_info2("Raju");
+        $ call emp_info2("Baburao");
+
+
+    
+
+        We can even get ouptut also .
+
+        $  create procedure get_sum_by_dept8
+            (in p_dept varchar(100), out p_sum decimal(10,2)) 
+            begin 
+                select sum(salary) into p_sum from employees 
+                where dept=p_dept; 
+            end$$
+
+        $ SET @emp_sum = 0;
+        $ CALL get_sum_by_dept8('HR', @emp_sum);
+
+        $ SELECT @emp_sum;
++------------+
+| @emp_sum   |
++------------+
+| 1249006.87 |
++------------+
+
+
+
+
+
+
+
+USER DEFINED FUNCTIONS
+======================= 
+    * Unlinke in brackets we just take inputs 
+
+    $ DELIMITER $$
+
+CREATE FUNCTION emp_name_max_salary() RETURNS VARCHAR(50)
+DETERMINISTIC
+NO SQL
+READS SQL DATA
+BEGIN
+    DECLARE v_max DECIMAL(10,2);
+    DECLARE v_name VARCHAR(50);
+
+    -- Find the maximum salary
+    SELECT MAX(salary) INTO v_max FROM employee;
+
+    -- Debug: Ensure v_max is not NULL
+    IF v_max IS NULL THEN
+        RETURN 'No data';
+    END IF;
+
+    -- Get the name of the employee with that maximum salary
+    SELECT fname INTO v_name FROM employee
+        WHERE salary = v_max
+        LIMIT 1; -- Return only one employee if there are ties
+
+    -- Debug: Ensure v_name is not NULL
+    IF v_name IS NULL THEN
+        RETURN 'No name found';
+    END IF;
+
+    RETURN v_name;
+END$$
+
+DELIMITER ;
+
+    END $$
+    $ DELIMITER ;
+
+
+    $ DROP FUNCTION IF EXISTS emp_name_max_salary;
+    # to delete it if function exist 
+
+    
+
+
+
+
+WINDOW FUNCTION
+===============
+    Also know as analy
