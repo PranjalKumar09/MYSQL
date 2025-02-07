@@ -161,3 +161,9 @@ Sometimes cause unknown exection in wrong time
 +------------------+
 |               99 |
 +------------------+
+
+
+ ROUND
+=======
+    ROUND(number, decimal_places);
+    SELECT ROUND(123.4567, 2);
