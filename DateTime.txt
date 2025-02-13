@@ -142,6 +142,7 @@ DATE_MATHS
 
     DATE_ADD( date, INTERVAL expr unit)
     DATE_SUB( date, INTERVAL expr unit)
+        like we can go in yesterday   --->  DATE_SUB(recordDate, INTERVAL 1 DAY)
 
     We can do datetime or date both datatypes 
 
