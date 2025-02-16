@@ -63,7 +63,7 @@ JOIN
         Shows each combination possible (not even if matched) , It is repetive some data of any column like of .
 
 
-        Inner Join : Every row from one table is combined with every row from another table
+        Inner Join : Every row from one table is combined with every row from another table, its default join too
         ----------    
             It will only show rows which has connectin
             $  select * from customers inner join orders on orders.cust_id=customers.cust_id limit 5;
