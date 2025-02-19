@@ -54,3 +54,30 @@ To delete entire the table
 
 
 
+$ UNION / UNION ALL  
+-- Combine results from multiple SELECTs  
+SELECT col FROM table1  
+UNION  
+SELECT col FROM table2;  -- Removes duplicates  
+
+SELECT col FROM table1  
+UNION ALL  
+SELECT col FROM table2;  -- Keeps duplicates  
+
+$ INTERSECT (MySQL Alternative)  
+-- Get common records between two tables  
+SELECT col FROM table1  
+INNER JOIN table2 USING (col);  
+
+$ EXCEPT / MINUS (MySQL Alternative)  
+-- Get records in table1 but not in table2  
+SELECT col FROM table1  
+LEFT JOIN table2 USING (col)  
+WHERE table2.col IS NULL;  
+
+$ WITH (Common Table Expression)  
+-- Create temporary named result sets  
+WITH temp_table AS (  
+    SELECT col FROM table WHERE col > 50  
+)  
+SELECT * FROM temp_table;  
