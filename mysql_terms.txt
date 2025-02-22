@@ -290,7 +290,7 @@ LIKE
 |    105 | Victor | Associate  | Deposit |
 +--------+--------+------------+---------+
 
-    $ select * from employees where desig like "%mAna%";
+    $ select * from employees where desig likeZ;
 +--------+------+---------+------+
 | emp_id | name | desig   | dept |
 +--------+------+---------+------+
@@ -724,7 +724,10 @@ ALTER
     It is for changing structure of table (adding or droping the table)
 
 
-    $ ALTER TABLE contacts ADD COLUMN city varchar(40);
+    $ ALTER TABLE contacts ADD  city varchar(40);
+    
+    ALTER TABLE table_name ADD column_name datatype; 
+    
     $ alter table contacts drop column city;
 
 
