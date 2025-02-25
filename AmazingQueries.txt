@@ -1,0 +1,70 @@
+
+https://leetcode.com/problems/students-and-examinations/solutions/3511410/mysql-three-solutions/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    S.student_id
+    ,S.student_name
+    ,Su.subject_name
+    ,COUNT(E.student_id) attended_exams
+FROM Students S
+CROSS JOIN Subjects Su
+LEFT JOIN Examinations E
+    ON S.student_id = E.student_id
+    AND Su.subject_name = E.subject_name
+GROUP BY S.student_id, S.student_name, Su.subject_name
+ORDER BY S.student_id, S.student_name, Su.subject_name
+
+
+https://leetcode.com/problems/managers-with-at-least-5-direct-reports/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT E1.name
+FROM Employee E1
+JOIN (
+    SELECT managerId, COUNT(*) AS directReports
+    FROM Employee
+    GROUP BY managerId
+    HAVING COUNT(*) >= 5
+) E2 ON E1.id = E2.managerId;
+
+ 
+https://leetcode.com/problems/confirmation-rate/?envType=study-plan-v2&envId=top-sql-50
+
+
+
+# Write your MySQL query statement below
+select s.user_id, round(avg(if(c.action="confirmed",1,0)),2) as confirmation_rate
+from Signups as s left join Confirmations as c on s.user_id= c.user_id group by user_id;
+
+
+IF(c.action = "confirmed", 1, 0)
+    This checks if the action is "confirmed". If yes, it returns 1; otherwise, it returns 0.
+
+
+
+
+# Write your MySQL query statement below
+
+
+SELECT visited_on,
+
+(SELECT SUM(amount)
+    FROM Customer
+    WHERE visited_on BETWEEN DATE_SUB(C.visited_on, INTERVAL 6 DAY) AND C.visited_on
+) AS amount, 
+
+
+ROUND((SELECT SUM(amount)/7
+    FROM Customer
+    WHERE visited_on BETWEEN DATE_SUB(C.visited_on, INTERVAL 6 DAY) AND C.visited_on), 2
+) AS average_amount
+
+
+
+FROM customer C
+WHERE visited_on >= (
+    SELECT date_add(min(visited_on), INTERVAL 6 DAY)
+    FROM customer
+)
+
+GROUP BY visited_on
+ORDER BY visited_on
